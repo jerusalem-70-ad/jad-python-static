@@ -3,7 +3,11 @@ import glob
 import json
 import jinja2
 import requests
-from .fetch_data import DATA_DIR
+
+try:
+    from .fetch_data import DATA_DIR
+except ImportError:
+    from fetch_data import DATA_DIR
 
 templateLoader = jinja2.FileSystemLoader(searchpath=".")
 templateEnv = jinja2.Environment(loader=templateLoader)
