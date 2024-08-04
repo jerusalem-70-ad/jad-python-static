@@ -5,13 +5,27 @@
 {% endblock page_description %}
 
 {% block content %}
-<div class="container">
-    <h1 class="text-center">{{ project_data.project_title }}</h1>
-    <div>
-        <p>
-            Hello my friend. Congrats for setting up <a href="https://github.com/acdh-oeaw/python-static-cookiecutter">python-static-cookiecutter</a>!
-        </p>
+<div class="container col-xxl-8 px-2">
+    <div class="row flex-lg-row align-items-center g-5 py-5">
+        <div class="col-lg-6">
+            <h1 class="display-5 text-body-emphasis lh-1 mb-3">
+                Medieval Reception of the Roman Conquest of Jerusalem
+            </h1>
+            <p class="lead">The Roman conquest of Jerusalem in 70 AD: Reception, use, and interpretation in the Middle
+                Ages (c.600-c.1200)
+            </p>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-start"><a href="search.html" type="button"
+                    class="btn btn-primary btn-lg px-4 me-md-2">Search</a><a href="passages.html" type="button"
+                    class="btn btn-outline-secondary btn-lg px-4">Browse</a></div>
+        </div>
+        <div class="col-10 col-sm-8 col-lg-6">
+            <figure class="figure">
+            <img src="img/title-image.png" class="d-block mx-lg-auto img-fluid"
+                alt="(Venice) La distruzione del tempio di Gerusalemme -Francesco Hayez" width="700" height="500" loading="lazy">
+                <figcaption class="figure-caption">(Venice) La distruzione del tempio di Gerusalemme -Francesco Hayez - gallerie Accademia Venice, by Didier Descouens - Own work, Public Domain, <a href="https://commons.wikimedia.org/w/index.php?curid=132796743"><i class="bi bi-wikipedia" aria-hidden="true"><span class="visually-hidden">Link to the source of the image</span></i></a></figcaption>
+            </figure>
+        </div>
     </div>
-
+</div>
 
 {% endblock content %}
