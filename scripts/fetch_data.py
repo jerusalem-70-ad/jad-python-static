@@ -3,9 +3,10 @@ import os
 
 import requests
 
+MAIN_DATA_FILE = "passages.json"
 GH_URL = "https://raw.githubusercontent.com/jerusalem-70-ad/jad-baserow-dump/main/data/"
 FILE_LIST = [
-    "passages.json",
+    MAIN_DATA_FILE,
 ]
 DATA_DIR = os.path.join("html", "data")
 
