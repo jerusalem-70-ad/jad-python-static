@@ -1,6 +1,6 @@
-const project_collection_name = "jad"
+const project_collection_name = "JAD"
 const main_search_field = "full_text"
-const search_api_key = "1fd9wZnipf1CR6qKAThQvsl9l5SEEL4l"  // custom search only key
+const search_api_key = "nxZkKN7Jphnp1mUFjataIhbKzdxEtd1Y"  // custom search only key
 
 const DEFAULT_CSS_CLASSES = {
     searchableInput: "form-control form-control-sm m-2 border-light-2",
@@ -43,7 +43,7 @@ search.addWidgets([
     instantsearch.widgets.searchBox({
         container: "#searchbox",
         autofocus: true,
-        placeholder: 'Suchen',
+        placeholder: 'Search',
         cssClasses: {
             form: "form-inline",
             input: "form-control col-md-11",
@@ -58,10 +58,11 @@ search.addWidgets([
             item: "w-100"
         },
         templates: {
-            empty: "Keine Resultate für <q>{{ query }}</q>",
+            empty: "No results for <q>{{ query }}</q>",
             item(hit, { html, components }) {
                 return html` 
-            <h3><a href="${hit.resolver}">${hit.title}</a></h3>`;
+            <h3><a href="${hit.rec_id}">${hit.title}</a></h3>
+            <p>${hit._snippetResult.full_text.matchedWords.length > 0 ? components.Snippet({ hit, attribute: 'full_text' }) : ''}</p>`;
             },
         },
     }),
@@ -73,7 +74,7 @@ search.addWidgets([
     instantsearch.widgets.clearRefinements({
         container: "#clear-refinements",
         templates: {
-            resetLabel: "Filter zurücksetzen",
+            resetLabel: "Reset filters",
         },
         cssClasses: {
             button: "btn",
@@ -94,22 +95,80 @@ search.addWidgets([
 
     }),
 
-    // instantsearch.widgets.panel({
-    //     collapsed: ({ state }) => {
-    //         return state.query.length === 0;
-    //     },
-    //     templates: {
-    //         header: 'Historical Period',
-    //     },
-    // })(instantsearch.widgets.refinementList)({
-    //     container: "#refinement-list-historical_period",
-    //     attribute: "historical_period",
-    //     searchable: false,
-    //     showMore: false,
-    //     showMoreLimit: 25,
-    //     limit: 10,
-    //     cssClasses: DEFAULT_CSS_CLASSES,
-    // }),
+
+    instantsearch.widgets.panel({
+        collapsed: ({ state }) => {
+            return state.query.length === 0;
+        },
+        templates: {
+            header: 'Work',
+        },
+    })(instantsearch.widgets.refinementList)({
+        container: "#refinement-list-work ",
+        attribute: "work.name",
+        searchable: true,
+        showMore: true,
+        showMoreLimit: 50,
+        limit: 10,
+        searchablePlaceholder: "Search for works",
+        cssClasses: DEFAULT_CSS_CLASSES,
+    }),
+
+    instantsearch.widgets.panel({
+        collapsed: ({ state }) => {
+            return state.query.length === 0;
+        },
+        templates: {
+            header: 'Author',
+        },
+    })(instantsearch.widgets.refinementList)({
+        container: "#refinement-list-author ",
+        attribute: "work.author.name",
+        searchable: true,
+        showMore: true,
+        showMoreLimit: 50,
+        limit: 10,
+        searchablePlaceholder: "Search for authors",
+        cssClasses: DEFAULT_CSS_CLASSES,
+    }),
+
+    instantsearch.widgets.panel({
+        collapsed: ({ state }) => {
+            return state.query.length === 0;
+        },
+        templates: {
+            header: 'Date of origin',
+        },
+    })(instantsearch.widgets.refinementList)({
+        container: "#refinement-list-workdate ",
+        attribute: "work.written_date",
+        searchable: true,
+        showMore: true,
+        showMoreLimit: 50,
+        limit: 10,
+        searchablePlaceholder: "Search for dates",
+        cssClasses: DEFAULT_CSS_CLASSES,
+    }),
+
+    instantsearch.widgets.panel({
+        collapsed: ({ state }) => {
+            return state.query.length === 0;
+        },
+        templates: {
+            header: 'Manuscript',
+        },
+    })(instantsearch.widgets.refinementList)({
+        container: "#refinement-list-manuscript ",
+        attribute: "manuscript.name.value",
+        searchable: true,
+        showMore: true,
+        showMoreLimit: 50,
+        limit: 10,
+        searchablePlaceholder: "Search for manuscripts",
+        cssClasses: DEFAULT_CSS_CLASSES,
+    }),
+
+    
 
     instantsearch.widgets.panel({
         collapsed: ({ state }) => {
@@ -120,7 +179,7 @@ search.addWidgets([
         },
     })(instantsearch.widgets.refinementList)({
         container: "#refinement-list-language ",
-        attribute: "language.value ",
+        attribute: "language.value",
         searchable: true,
         showMore: true,
         showMoreLimit: 50,
@@ -128,24 +187,6 @@ search.addWidgets([
         searchablePlaceholder: "Search for Languages",
         cssClasses: DEFAULT_CSS_CLASSES,
     }),
-
-    // instantsearch.widgets.panel({
-    //     collapsed: ({ state }) => {
-    //         return state.query.length === 0;
-    //     },
-    //     templates: {
-    //         header: 'Language',
-    //     },
-    // })(instantsearch.widgets.refinementList)({
-    //     container: "#refinement-list-language",
-    //     attribute: "language",
-    //     searchable: true,
-    //     showMore: true,
-    //     showMoreLimit: 50,
-    //     limit: 10,
-    //     searchablePlaceholder: "Search for Language",
-    //     cssClasses: DEFAULT_CSS_CLASSES,
-    // }),
     
 
 

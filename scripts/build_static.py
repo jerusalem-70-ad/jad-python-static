@@ -3,6 +3,7 @@ import glob
 import json
 import jinja2
 import requests
+
 try:
     from .fetch_data import DATA_DIR
 except ImportError:
