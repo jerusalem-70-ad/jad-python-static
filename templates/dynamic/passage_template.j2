@@ -1,0 +1,55 @@
+{% extends "templates/partials/base.j2" %}
+{% block title %}{{ data.short_passage }}{% endblock title %}
+{% block page_description %}
+<meta name="description" content="{{ data.passage }}">
+{% endblock page_description %}
+
+{% block content %}
+<nav class="ps-3" style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{ data.short_passage }}</li>
+    </ol>
+</nav>
+<div class="container">
+    <div class="row">
+        <div class="col-2 text-start">
+            <a href="{{ data.prev}}">
+                <i class="bi bi-chevron-left fs-2" aria-hidden="true"></i>
+                <span class="visually-hidden">back to previous item</span>
+            </a>
+        </div>
+        <div class="col-8 text-center">
+            <h1>{{ data.short_passage }}</h1>
+        </div>
+
+        <div class="col-2 text-end">
+            <a href="{{ data.next}}">
+                <i class="bi bi-chevron-right fs-2" aria-hidden="true"></i>
+                <span class="visually-hidden">forward to next item</span>
+            </a>
+        </div>
+    </div>
+
+    <div class="d-flex pt-5 justify-content-center">
+        <figure>
+            <blockquote class="blockquote">
+                <p>{{ data.passage }}</p>
+            </blockquote>
+            <figcaption class="blockquote-footer">
+                {% for work in data.work %}
+                {% for author in work.author %}
+                {{ author.name }}
+                {% endfor %}
+                <cite title="{{ work.name }}">{{ work.name }}</cite>
+                {% endfor %}
+            </figcaption>
+        </figure>
+    </div>
+
+
+
+</div>
+{% endblock content %}
+{% block scripts2 %}
+{% endblock scripts2 %}
