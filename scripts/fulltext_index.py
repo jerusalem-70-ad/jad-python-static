@@ -7,6 +7,7 @@ from .fetch_data import DATA_DIR, MAIN_DATA_FILE
 
 
 def fulltext_index():
+    print("startin with fulltext index")
     COLLECTION_NAME = "JAD"
     try:
         client.collections[COLLECTION_NAME].delete()
