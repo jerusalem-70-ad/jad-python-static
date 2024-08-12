@@ -25,10 +25,16 @@ def build_static():
     imprint_url = f"https://imprint.acdh.oeaw.ac.at/{redmine_id}?locale=de"
     print(imprint_url)
     try:
-        r = requests.get(imprint_url)
+        r = requests.get(imprint_url, timeout=2)
         project_data["imprint"] = r.content.decode("utf-8")
-    except Exception as e:
-        project_data["imprint"] = e
+    except:  # noqa E722
+        project_data[
+            "imprint"
+        ] = """
+        Due to temporary technical difficulties, the legal notice for this website cannot be displayed.<br />
+        However, general information can be found in the imprint of the <a href="https://www.oeaw.ac.at/oeaw/impressum">
+        Austrian Academy of Sciences</a>.
+        """
 
     os.makedirs(out_dir, exist_ok=True)
     for x in glob.glob(f"{out_dir}/*.html"):
