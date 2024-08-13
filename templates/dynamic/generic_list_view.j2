@@ -1,5 +1,5 @@
 {% extends "templates/partials/base.j2" %}
-{% block title %}Browse Passages{% endblock title %}
+{% block title %}Browse {{ data.verbose_name_pl }}{% endblock title %}
 {% block page_description %}
 <meta name="description" content="whatever">
 {% endblock page_description %}
@@ -11,11 +11,11 @@
 <nav class="ps-3" style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Browse Passages</li>
+        <li class="breadcrumb-item active" aria-current="page">Browse {{ data.verbose_name_pl }}</li>
     </ol>
 </nav>
 <div class="container">
-    <h1 class="text-center">Browse Passages</h1>
+    <h1 class="text-center">Browse {{ data.verbose_name_pl }}</h1>
     <div id="tabulator-table">
         
     </div>
@@ -24,5 +24,10 @@
 {% endblock content %}
 
 {% block scripts2 %}
-<script type="module" src="js/passages.js"></script>
+<script>
+const dataUrl = "data/{{ data.file_name }}.json"
+const configKey = "{{ data.file_name }}"
+</script>
+<script type="module" src="js/tabulator.js"></script>
+
 {% endblock scripts2 %}

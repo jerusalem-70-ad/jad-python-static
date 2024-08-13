@@ -14,7 +14,6 @@ function mutateSingleSelectField(value, data, type, params, component) {
 
 function mutateM2mField(value, data, type, params, component) {
     let labelField = params.labelField
-    console.log(labelField)
     let names = [];
 
     value.forEach(item => {
@@ -23,7 +22,6 @@ function mutateM2mField(value, data, type, params, component) {
             names.push(item[labelField]);
         }
     });
-    console.log(names)
     return names.join(" ")
 
 
