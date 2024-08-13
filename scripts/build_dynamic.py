@@ -39,16 +39,15 @@ def build_dynamic():
         value = items[key_list[i]]
 
         output_path = os.path.join(out_dir, f'{value["jad_id"]}.html')
+        data = value
+        passage = value["passage"]
+        if len(passage) >= 35:
+            data["short_passage"] = f"{passage[:35]}..."
+        else:
+            data["short_passage"] = passage
+        data["prev"] = f"{prev_item}.html"
+        data["next"] = f"{next_item}.html"
         with open(output_path, "w", encoding="utf-8") as f:
-            data = value
-            passage = value["passage"]
-            if len(passage) >= 35:
-                data["short_passage"] = f"{passage[:35]}..."
-            else:
-                data["short_passage"] = passage
-            data["prev"] = f"{prev_item}.html"
-            data["next"] = f"{next_item}.html"
-
             f.write(page_template.render({"project_data": project_data, "data": data}))
 
 
