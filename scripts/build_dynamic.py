@@ -31,9 +31,14 @@ def build_dynamic():
             items = json.load(f)
 
         os.makedirs(out_dir, exist_ok=True)
-        page_template = templateEnv.get_template(
-            f"./templates/dynamic/{x['file_name']}_template.j2"
-        )
+        try:
+            page_template = templateEnv.get_template(
+                f"./templates/dynamic/{x['file_name']}_template.j2"
+            )
+        except jinja2.exceptions.TemplateError:
+            page_template = templateEnv.get_template(
+                "./templates/dynamic/generic_detail.j2"
+            )
 
         key_list = sorted(items.keys())
         for i, v in enumerate(key_list):
