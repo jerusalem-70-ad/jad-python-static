@@ -4,24 +4,27 @@ import os
 import requests
 
 
-LIST_VIEW_CONF = [
+MODEL_CONFIG = [
     {
         "data_source": "data/works",
         "verbose_name_pl": "Works",
         "verbose_name_sg": "Work",
         "file_name": "works",
+        "label_field": "title",
     },
     {
         "data_source": "data/passages",
         "verbose_name_pl": "Passages",
         "verbose_name_sg": "Passage",
         "file_name": "passages",
+        "label_field": "short_passage",
     },
     {
         "data_source": "json_dumps/authors",
         "verbose_name_pl": "Authors",
         "verbose_name_sg": "Author",
         "file_name": "authors",
+        "label_field": "name",
     },
 ]
 
@@ -34,7 +37,7 @@ def fetch_data():
 
     os.makedirs(DATA_DIR, exist_ok=True)
 
-    for x in LIST_VIEW_CONF:
+    for x in MODEL_CONFIG:
         url = f"{GH_URL}{x['data_source']}.json"
         print(url)
         data = requests.get(url).json()

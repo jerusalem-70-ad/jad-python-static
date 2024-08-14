@@ -8,9 +8,9 @@ except ImportError:
     from build_static import out_dir
 
 try:
-    from .fetch_data import MAIN_DATA_FILE, DATA_DIR
+    from .fetch_data import DATA_DIR, MODEL_CONFIG
 except ImportError:
-    from fetch_data import MAIN_DATA_FILE, DATA_DIR
+    from fetch_data import DATA_DIR, MODEL_CONFIG
 
 templateLoader = jinja2.FileSystemLoader(searchpath=".")
 templateEnv = jinja2.Environment(loader=templateLoader)
@@ -20,35 +20,51 @@ def build_dynamic():
     with open("project.json", "r", encoding="utf-8") as f:
         project_data = json.load(f)
 
-    print("#########################")
-    print("building edition pages")
+    for x in MODEL_CONFIG:
 
-    with open(os.path.join(DATA_DIR, MAIN_DATA_FILE), "r", encoding="utf-8") as f:
-        items = json.load(f)
+        print("#########################")
+        print(f"building {x['verbose_name_sg']} detail view pages")
 
-    os.makedirs(out_dir, exist_ok=True)
-    page_template = templateEnv.get_template("./templates/dynamic/passage_template.j2")
+        with open(
+            os.path.join(DATA_DIR, f'{x["file_name"]}.json'), "r", encoding="utf-8"
+        ) as f:
+            items = json.load(f)
 
-    key_list = sorted(items.keys())
-    for i, v in enumerate(key_list):
-        prev_item = items[key_list[i - 1]]["jad_id"]
-        try:
-            next_item = items[key_list[i + 1]]["jad_id"]
-        except IndexError:
-            next_item = items[key_list[0]]
-        value = items[key_list[i]]
+        os.makedirs(out_dir, exist_ok=True)
+        page_template = templateEnv.get_template(
+            f"./templates/dynamic/{x['file_name']}_template.j2"
+        )
 
-        output_path = os.path.join(out_dir, f'{value["jad_id"]}.html')
-        data = value
-        passage = value["passage"]
-        if len(passage) >= 35:
-            data["short_passage"] = f"{passage[:35]}..."
-        else:
-            data["short_passage"] = passage
-        data["prev"] = f"{prev_item}.html"
-        data["next"] = f"{next_item}.html"
-        with open(output_path, "w", encoding="utf-8") as f:
-            f.write(page_template.render({"project_data": project_data, "data": data}))
+        key_list = sorted(items.keys())
+        for i, v in enumerate(key_list):
+            prev_item = items[key_list[i - 1]]["jad_id"]
+            try:
+                next_item = items[key_list[i + 1]]["jad_id"]
+            except IndexError:
+                next_item = items[key_list[0]]
+            value = items[key_list[i]]
+
+            output_path = os.path.join(out_dir, f'{value["jad_id"]}.html')
+            data = value
+            data["prev"] = f"{prev_item}.html"
+            data["next"] = f"{next_item}.html"
+            passage = value.get("passage", None)
+            if passage:
+                if len(passage) >= 35:
+                    data["short_passage"] = f"{passage[:35]}..."
+                else:
+                    data["short_passage"] = passage
+            with open(output_path, "w", encoding="utf-8") as f:
+                f.write(
+                    page_template.render(
+                        {
+                            "project_data": project_data,
+                            "data": data,
+                            "model": x,
+                            "label": data[x["label_field"]],
+                        }
+                    )
+                )
 
 
 if __name__ == "__main__":

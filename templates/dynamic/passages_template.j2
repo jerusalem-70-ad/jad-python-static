@@ -1,0 +1,26 @@
+{% extends "templates/partials/detail_view.j2" %}
+
+{% block detail_view %} 
+
+    <div class="d-flex pt-5 justify-content-center">
+        <figure>
+            <blockquote class="blockquote">
+                <p>{{ data.passage }}</p>
+            </blockquote>
+            <figcaption class="blockquote-footer">
+                {% for work in data.work %}
+                {% for author in work.author %}
+                {{ author.name }}
+                {% endfor %}
+                <cite title="{{ work.name }}">{{ work.name }}</cite>
+                {% endfor %}
+            </figcaption>
+        </figure>
+    </div>
+
+
+
+</div>
+{% endblock detail_view %}
+{% block scripts2 %}
+{% endblock scripts2 %}
