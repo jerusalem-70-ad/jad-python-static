@@ -8,9 +8,9 @@ except ImportError:
     from build_static import out_dir
 
 try:
-    from .fetch_data import LIST_VIEW_CONF
+    from .fetch_data import MODEL_CONFIG
 except ImportError:
-    from fetch_data import LIST_VIEW_CONF
+    from fetch_data import MODEL_CONFIG
 
 
 templateLoader = jinja2.FileSystemLoader(searchpath=".")
@@ -24,7 +24,7 @@ def build_list_views():
     os.makedirs(out_dir, exist_ok=True)
     page_template = templateEnv.get_template("./templates/dynamic/generic_list_view.j2")
 
-    for x in LIST_VIEW_CONF:
+    for x in MODEL_CONFIG:
         save_path = os.path.join(out_dir, f'{x["file_name"]}.html')
         print(save_path)
         with open(save_path, "w", encoding="utf-8") as f:
