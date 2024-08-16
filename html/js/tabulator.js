@@ -16,6 +16,10 @@ const colConf = {
         { title: "Name", field: "name", headerFilter: "input", minWidth: 400 },
         { title: "Author", field: "author", mutator: mutateM2mField, mutatorParams: { labelField: "name" }, headerFilter: "input" },
         { title: "Manuscripts", field: "manuscripts", mutator: mutateM2mField, mutatorParams: { labelField: "value" }, headerFilter: "input" },
+    ],
+    "manuscripts": [
+        { title: "ID", field: "jad_id", visible: false },
+        { title: "Name", field: "name", headerFilter: "input", minWidth: 400 },
     ]
 }
 
