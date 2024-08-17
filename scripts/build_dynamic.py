@@ -35,7 +35,7 @@ def build_dynamic():
             page_template = templateEnv.get_template(
                 f"./templates/dynamic/{x['file_name']}_template.j2"
             )
-        except jinja2.exceptions.TemplateError:
+        except jinja2.exceptions.TemplateNotFound:
             page_template = templateEnv.get_template(
                 "./templates/dynamic/generic_detail.j2"
             )

@@ -10,9 +10,9 @@
             <figcaption class="blockquote-footer">
                 {% for work in data.work %}
                 {% for author in work.author %}
-                {{ author.name }}
+                <a href="{{ author.jad_id }}.html">{{ author.name }}</a>
                 {% endfor %}
-                <cite title="{{ work.name }}">{{ work.name }}</cite>
+                <cite title="{{ work.name }}"><a href="{{ work.jad_id }}.html">{{ work.name }}</a></cite>
                 {% endfor %}
             </figcaption>
         </figure>

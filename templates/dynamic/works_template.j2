@@ -1,7 +1,26 @@
 {% extends "templates/partials/detail_view.j2" %}
 
-{% block detail_view %} 
-{{ data }}
+{% block detail_view %}
+<dl class="text-center">
+    <dt>Author</dt>
+    {% for x in data.author %}
+    <dd><a href="{{ x.jad_id }}.html">{{ x.name }}</a></dd>
+    {% endfor %}
+    <dt>Date of origin</dt>
+    <dd>{{ data.written_date }}</dd>
+    {% if data.manuscripts %}
+    <dt>manuscripts</dt>
+    {% for x in data.manuscripts %}
+    <dd><a href="jad_manuscript__{{ x.id }}.html">{{ x.value }}</a></dd>
+    {% endfor %}
+    {% endif %}
+    <dt>published in</dt>
+    {% for x in data.published_edition %}
+    <dd>
+        <a href="{{ x.digi_url }}">{{ x.name }}</a>
+    </dd>
+    {% endfor %}
+</dl>
 {% endblock detail_view %}
 {% block scripts2 %}
 {% endblock scripts2 %}
