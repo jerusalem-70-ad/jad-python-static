@@ -1,22 +1,49 @@
 {% extends "templates/partials/detail_view.j2" %}
 
-{% block detail_view %} 
+{% block detail_view %}
 
-    <div class="d-flex pt-5 justify-content-center">
-        <figure>
-            <blockquote class="blockquote">
-                <p>{{ data.passage }}</p>
-            </blockquote>
-            <figcaption class="blockquote-footer">
-                {% for work in data.work %}
-                {% for author in work.author %}
-                <a href="{{ author.jad_id }}.html">{{ author.name }}</a>
-                {% endfor %}
-                <cite title="{{ work.name }}"><a href="{{ work.jad_id }}.html">{{ work.name }}</a></cite>
-                {% endfor %}
-            </figcaption>
-        </figure>
-    </div>
+<div class="d-flex pt-5 justify-content-center">
+    <figure>
+        <blockquote class="blockquote">
+            <p>{{ data.passage }}</p>
+        </blockquote>
+        <figcaption class="blockquote-footer">
+            {% for work in data.work %}
+            {% for author in work.author %}
+            <a href="{{ author.jad_id }}.html">{{ author.name }}</a>
+            {% endfor %}
+            <cite title="{{ work.name }}">
+                <a href="{{ work.jad_id }}.html">{{ work.name }}</a>{% if data.position_in_work %} ({{ data.position_in_work }}){% endif %}
+            </cite>
+            {% endfor %}
+        </figcaption>
+    </figure>
+</div>
+<div>
+    <dl>
+        <dt>Full Paragraph</dt>
+        <dd>{{ data.text_paragraph }}</dd>
+
+        <dt>Biblical Reference</dt>
+        {% for x in data.biblical_references %}
+        <dd>{{ x.value }}</dd>
+        {% endfor %}
+
+        <dt>found in manuscripts</dt>
+        {% for x in data.manuscript %}
+        <dd>
+            <a href="{{ x.jad_id }}.html">{% for y in x.name %}{{ y.value }}{% endfor %}</a>
+        </dd>
+        {% endfor %}
+        
+        <dt>Keywords</dt>
+        {% for x in data.keywords %}
+        <dd>
+            <a href="{{ x.jad_id }}.html">{{ x.name }}</a>
+        </dd>
+        {% endfor %}
+    </dl>
+</div>
 
 
 
