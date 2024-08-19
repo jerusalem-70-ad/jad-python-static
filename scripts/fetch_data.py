@@ -4,9 +4,9 @@ import requests
 from jsonpath_ng import parse
 
 try:
-    from .models import MODEL_CONFIG
+    from .models import MODEL_CONFIG, ID_FIELD
 except ImportError:
-    from models import MODEL_CONFIG
+    from models import MODEL_CONFIG, ID_FIELD
 
 MAIN_DATA_FILE = "passages.json"
 GH_URL = "https://raw.githubusercontent.com/jerusalem-70-ad/jad-baserow-dump/main/"
@@ -27,9 +27,9 @@ def fetch_data():
         # add prev/next
         key_list = sorted(data.keys())
         for i, v in enumerate(key_list):
-            prev_item = data[key_list[i - 1]]["jad_id"]
+            prev_item = data[key_list[i - 1]][ID_FIELD]
             try:
-                next_item = data[key_list[i + 1]]["jad_id"]
+                next_item = data[key_list[i + 1]][ID_FIELD]
             except IndexError:
                 next_item = data[key_list[0]]
             value = data[key_list[i]]
@@ -63,14 +63,14 @@ def add_related_objects():
                 feed_data = json.load(fp)
 
             for key, value in source_data.items():
-                jad_id = value["jad_id"]
+                jad_id = value[ID_FIELD]
                 related_items = []
                 for _, rel_value in feed_data.items():
                     for m in rel_value[lookup_field]:
-                        if m["jad_id"] == jad_id:
+                        if m[ID_FIELD] == jad_id:
                             related_items.append(
                                 {
-                                    "jad_id": rel_value["jad_id"],
+                                    ID_FIELD: rel_value[ID_FIELD],
                                     "view_label": rel_value["view_label"],
                                 }
                             )

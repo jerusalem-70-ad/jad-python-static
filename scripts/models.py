@@ -41,3 +41,6 @@ MODEL_CONFIG = [
         "related_objects": [{"source_file": "works", "lookup_field": "author"}],
     },
 ]
+
+
+ID_FIELD = "jad_id"

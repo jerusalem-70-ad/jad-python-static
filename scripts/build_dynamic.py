@@ -8,9 +8,9 @@ except ImportError:
     from build_static import out_dir
 
 try:
-    from .fetch_data import DATA_DIR, MODEL_CONFIG
+    from .fetch_data import DATA_DIR, MODEL_CONFIG, ID_FIELD
 except ImportError:
-    from fetch_data import DATA_DIR, MODEL_CONFIG
+    from fetch_data import DATA_DIR, MODEL_CONFIG, ID_FIELD
 
 templateLoader = jinja2.FileSystemLoader(searchpath=".")
 templateEnv = jinja2.Environment(loader=templateLoader)
@@ -42,14 +42,14 @@ def build_dynamic():
 
         key_list = sorted(items.keys())
         for i, v in enumerate(key_list):
-            prev_item = items[key_list[i - 1]]["jad_id"]
+            prev_item = items[key_list[i - 1]][ID_FIELD]
             try:
-                next_item = items[key_list[i + 1]]["jad_id"]
+                next_item = items[key_list[i + 1]][ID_FIELD]
             except IndexError:
                 next_item = items[key_list[0]]
             value = items[key_list[i]]
 
-            output_path = os.path.join(out_dir, f'{value["jad_id"]}.html')
+            output_path = os.path.join(out_dir, f"{value[ID_FIELD]}.html")
             data = value
             data["prev"] = f"{prev_item}.html"
             data["next"] = f"{next_item}.html"

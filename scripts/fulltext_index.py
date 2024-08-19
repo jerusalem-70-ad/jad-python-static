@@ -3,7 +3,7 @@ import os
 from acdh_cfts_pyutils import TYPESENSE_CLIENT as client
 from typesense.api_call import ObjectNotFound
 
-from .fetch_data import DATA_DIR, MAIN_DATA_FILE
+from .fetch_data import DATA_DIR, MAIN_DATA_FILE, ID_FIELD
 
 
 def fulltext_index():
@@ -32,8 +32,8 @@ def fulltext_index():
         data = json.load(f)
     records = []
     for _, value in data.items():
-        item = {"id": value["jad_id"]}
-        item["rec_id"] = f'{value["jad_id"]}.html'
+        item = {"id": value[ID_FIELD]}
+        item["rec_id"] = f"{value[ID_FIELD]}.html"
         item["title"] = f'{value["passage"]}'
         item["full_text"] = f'{value["passage"]} {value["text_paragraph"]}'
         item["language"] = value["language"]
