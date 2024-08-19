@@ -1,56 +1,12 @@
 import json
 import os
-
 import requests
+from jsonpath_ng import parse
 
-
-MODEL_CONFIG = [
-    {
-        "data_source": "data/manuscripts",
-        "verbose_name_pl": "Manuscripts",
-        "verbose_name_sg": "Manuscript",
-        "file_name": "manuscripts",
-        "label_field": "name",
-        "related_objects": [
-            {
-                "source_file": "passages",
-                "lookup_field": "manuscript",
-                "label_field": "passage",
-            },
-        ],
-    },
-    {
-        "data_source": "data/works",
-        "verbose_name_pl": "Works",
-        "verbose_name_sg": "Work",
-        "file_name": "works",
-        "label_field": "title",
-        "related_objects": [
-            {
-                "source_file": "passages",
-                "lookup_field": "work",
-                "label_field": "passage",
-            }
-        ],
-    },
-    {
-        "data_source": "data/passages",
-        "verbose_name_pl": "Passages",
-        "verbose_name_sg": "Passage",
-        "file_name": "passages",
-        "label_field": "short_passage",
-    },
-    {
-        "data_source": "json_dumps/authors",
-        "verbose_name_pl": "Authors",
-        "verbose_name_sg": "Author",
-        "file_name": "authors",
-        "label_field": "name",
-        "related_objects": [
-            {"source_file": "works", "lookup_field": "author", "label_field": "name"}
-        ],
-    },
-]
+try:
+    from .models import MODEL_CONFIG, ID_FIELD
+except ImportError:
+    from models import MODEL_CONFIG, ID_FIELD
 
 MAIN_DATA_FILE = "passages.json"
 GH_URL = "https://raw.githubusercontent.com/jerusalem-70-ad/jad-baserow-dump/main/"
@@ -62,14 +18,28 @@ def fetch_data():
     os.makedirs(DATA_DIR, exist_ok=True)
 
     for x in MODEL_CONFIG:
+        jsonpath_expr = parse(x["label_lookup_expression"])
         url = f"{GH_URL}{x['data_source']}.json"
-        print(url)
         data = requests.get(url).json()
         save_path = os.path.join(DATA_DIR, f'{x["file_name"]}.json')
         print(f"downloading {url} and saving it to {save_path}")
-        if x["file_name"] == "manuscripts":
-            for _, value in data.items():
-                value[x["label_field"]] = value["name"][0]["value"]
+
+        # add prev/next
+        key_list = sorted(data.keys())
+        for i, v in enumerate(key_list):
+            prev_item = data[key_list[i - 1]][ID_FIELD]
+            try:
+                next_item = data[key_list[i + 1]][ID_FIELD]
+            except IndexError:
+                next_item = data[key_list[0]]
+            value = data[key_list[i]]
+
+            value["prev"] = f"{prev_item}.html"
+            value["next"] = f"{next_item}.html"
+
+        # add view_labels
+        for _, value in data.items():
+            value["view_label"] = jsonpath_expr.find(value)[0].value
         with open(save_path, "w", encoding="utf-8") as fp:
             json.dump(data, fp, ensure_ascii=False)
 
@@ -87,22 +57,21 @@ def add_related_objects():
         for item in rel_obj:
             source_file = item["source_file"]
             lookup_field = item["lookup_field"]
-            label_field = item["label_field"]
 
             feed_path = os.path.join(DATA_DIR, f"{source_file}.json")
             with open(feed_path, "r") as fp:
                 feed_data = json.load(fp)
 
             for key, value in source_data.items():
-                jad_id = value["jad_id"]
+                jad_id = value[ID_FIELD]
                 related_items = []
                 for _, rel_value in feed_data.items():
                     for m in rel_value[lookup_field]:
-                        if m["jad_id"] == jad_id:
+                        if m[ID_FIELD] == jad_id:
                             related_items.append(
                                 {
-                                    "jad_id": rel_value["jad_id"],
-                                    "label": rel_value[label_field],
+                                    ID_FIELD: rel_value[ID_FIELD],
+                                    "view_label": rel_value["view_label"],
                                 }
                             )
                             break

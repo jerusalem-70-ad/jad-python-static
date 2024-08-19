@@ -19,7 +19,7 @@ const colConf = {
     ],
     "manuscripts": [
         { title: "ID", field: "jad_id", visible: false },
-        { title: "Name", field: "name", headerFilter: "input", minWidth: 400 },
+        { title: "Name", field: "view_label", headerFilter: "input", minWidth: 400 },
     ]
 }
 
@@ -38,5 +38,5 @@ var table = new Tabulator("#tabulator-table", {
 table.on("rowClick", function (e, row) {
     var data = row.getData();
     var url = `${data["jad_id"]}.html`
-    window.open(url);
+    window.open(url, "_self");
 });

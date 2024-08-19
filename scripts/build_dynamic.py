@@ -8,9 +8,9 @@ except ImportError:
     from build_static import out_dir
 
 try:
-    from .fetch_data import DATA_DIR, MODEL_CONFIG
+    from .fetch_data import DATA_DIR, MODEL_CONFIG, ID_FIELD
 except ImportError:
-    from fetch_data import DATA_DIR, MODEL_CONFIG
+    from fetch_data import DATA_DIR, MODEL_CONFIG, ID_FIELD
 
 templateLoader = jinja2.FileSystemLoader(searchpath=".")
 templateEnv = jinja2.Environment(loader=templateLoader)
@@ -42,23 +42,23 @@ def build_dynamic():
 
         key_list = sorted(items.keys())
         for i, v in enumerate(key_list):
-            prev_item = items[key_list[i - 1]]["jad_id"]
+            prev_item = items[key_list[i - 1]][ID_FIELD]
             try:
-                next_item = items[key_list[i + 1]]["jad_id"]
+                next_item = items[key_list[i + 1]][ID_FIELD]
             except IndexError:
                 next_item = items[key_list[0]]
             value = items[key_list[i]]
 
-            output_path = os.path.join(out_dir, f'{value["jad_id"]}.html')
+            output_path = os.path.join(out_dir, f"{value[ID_FIELD]}.html")
             data = value
             data["prev"] = f"{prev_item}.html"
             data["next"] = f"{next_item}.html"
             passage = value.get("passage", None)
             if passage:
                 if len(passage) >= 35:
-                    data["short_passage"] = f"{passage[:35]}..."
+                    data["view_label"] = f"{passage[:35]}..."
                 else:
-                    data["short_passage"] = passage
+                    data["view_label"] = passage
             with open(output_path, "w", encoding="utf-8") as f:
                 f.write(
                     page_template.render(
@@ -66,7 +66,7 @@ def build_dynamic():
                             "project_data": project_data,
                             "data": data,
                             "model": x,
-                            "label": data[x["label_field"]],
+                            "label": data["view_label"],
                         }
                     )
                 )

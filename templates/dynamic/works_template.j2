@@ -31,7 +31,7 @@
     <h2>Passages</h2>
     {% for x in data.related__passages %}
     <blockquote class="blockquote">
-        <p>{{ x.label }} <a href="{{ x.jad_id }}.html"><span class="visually-hidden">go to detail view of passage {{ x.jad_id }}</span><i class="bi bi-blockquote-left p-2" aria-hidden="true"></i></a></p>
+        <p>{{ x.view_label }} <a href="{{ x.jad_id }}.html"><span class="visually-hidden">go to detail view of passage {{ x.jad_id }}</span><i class="bi bi-blockquote-left p-2" aria-hidden="true"></i></a></p>
     </blockquote>
 {% endfor %}
 </div>
