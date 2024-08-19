@@ -56,9 +56,9 @@ def build_dynamic():
             passage = value.get("passage", None)
             if passage:
                 if len(passage) >= 35:
-                    data["short_passage"] = f"{passage[:35]}..."
+                    data["view_label"] = f"{passage[:35]}..."
                 else:
-                    data["short_passage"] = passage
+                    data["view_label"] = passage
             with open(output_path, "w", encoding="utf-8") as f:
                 f.write(
                     page_template.render(
@@ -66,7 +66,7 @@ def build_dynamic():
                             "project_data": project_data,
                             "data": data,
                             "model": x,
-                            "label": data[x["label_field"]],
+                            "label": data["view_label"],
                         }
                     )
                 )

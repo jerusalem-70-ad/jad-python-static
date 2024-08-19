@@ -19,7 +19,7 @@ const colConf = {
     ],
     "manuscripts": [
         { title: "ID", field: "jad_id", visible: false },
-        { title: "Name", field: "name", headerFilter: "input", minWidth: 400 },
+        { title: "Name", field: "view_label", headerFilter: "input", minWidth: 400 },
     ]
 }
 
